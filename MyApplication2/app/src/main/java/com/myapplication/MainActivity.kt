@@ -26,6 +26,11 @@ class MainActivity : AppCompatActivity() {
         val service = retrofit.create<HackerNewsService>(HackerNewsService::class.java)
 
 
+        val recyclerview = findViewById<RecyclerView>(R.id.recyclerview)
+        recyclerview.layoutManager = LinearLayoutManager(this)
+        recyclerview.adapter = HackerNewsAdapter(mItems) { item ->
+            Log.d("Ted", item.s +" " + item.title)
+        }
         service.topStories().enqueue(object : Callback<List<String>> {
             override fun onFailure(call: Call<List<String>>?, t: Throwable?) {
             }
@@ -44,6 +49,7 @@ class MainActivity : AppCompatActivity() {
                                 mItems.add(item)
 
                                 Log.d("Ted", item.s +" " + item.title)
+                                recyclerview.adapter.notifyDataSetChanged()
                             }
 
                         })
